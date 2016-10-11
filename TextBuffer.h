@@ -18,7 +18,7 @@
 #endif
 
 
-class TextBuffer
+class TextBuffer : public Print
 {
     
   public:
@@ -91,6 +91,11 @@ class TextBuffer
     
     // Returns the capacity of the buffer, equal to the bufsize passed initially
     int getCapacity();
+    
+    // Variables used by the extension of print class
+    virtual size_t write(uint8_t);
+    virtual size_t write(const char *str);
+    virtual size_t write(const uint8_t *buffer, size_t size);
     
   private:  
   
