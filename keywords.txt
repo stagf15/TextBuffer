@@ -1,4 +1,4 @@
-﻿#######################################
+#######################################
 # Syntax Coloring Map For TextBuffer
 #######################################
 
@@ -20,14 +20,14 @@ TextBuffer	KEYWORD1
 
 begin	KEYWORD2
 write	KEYWORD2
-writeln	KEYWORD2
-bufWrite	KEYWORD2
+write	KEYWORD2
 clear	KEYWORD2
 end	KEYWORD2
 getBuffer	KEYWORD2
 getBufPointer	KEYWORD2
 getSize	KEYWORD2
 getCapacity	KEYWORD2
+getCheckSum KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
