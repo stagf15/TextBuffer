@@ -1,9 +1,11 @@
-﻿/*
-
-  TextBuffer.h - Library for writing various types to a buffer
+/*
+  TextBuffer.h - Library for writing text/characters to a buffer
   that will store them in a char array of predetermined length
   
-  Created by stagf15, 19 Jul 2016.
+  Inherits from the Print.h class and uses the predefined print
+  methods to feed this class
+  
+  Created by stagf15, 11 Oct 16.
   Released into the public domain.
   
 */
@@ -20,16 +22,16 @@
 
 class TextBuffer : public Print
 {
-    
   public:
     
     // In general, functions will return the following:
-    //    If failure, return int 0, or null terminator: (char)0
-    //    If success, return int 1, or desired data
+    //    If failure, return int 0, or (char)0
+    //    If success, return int 1, or the byte size of 
+    //      what was added/changed/created
     
     // If malloc fails in begin() then it will return 0
     //   - all other functions will then return failure
-    //   - if this is would cause failure in the sketch, recommend
+    //   - if this would cause failure in the sketch, recommend
     //       checking begin() for failure and handling there
     
     // Class to call to initialize the buffer (before Setup). Requires the 
@@ -40,40 +42,17 @@ class TextBuffer : public Print
     // Begins the buffer; allocates the memory (in Setup)
     int begin();
     
-    // The following functions accept various types as input, but all write a 
-    // string representation of that type to the buffer  
-    
-    // For each type, there is a write(bufData), which will write just the 
-    // string, and a writeln(bufData), which will add a '\r\n' to the string 
-    // to signify the end of a line
-    
-    int write(char* bufData);
-    int writeln(char* bufData);
-    int write(char bufData);
-    int writeln(char bufData);
-    int write(int bufData);
-    int writeln(int bufData);
-    int write(long unsigned int bufData);
-    int writeln(long unsigned int bufData);
-    int write(size_t bufData);
-    int writeln(size_t bufData);
-    int write(float bufData);
-    int writeln(float bufData);
-    int write(double bufData);
-    int writeln(double bufData);
-    int write(String bufData);
-    int writeln(String bufData);
-    int write();
-    int writeln();
-    int bufWrite(String bufData);
-    String getCheckSum();
-    
-    // Clears the buffer, writes a null terminator to byte 0 and 
-    // resets length and position to 0
+    // Functions used by the extension of print class
+    virtual size_t write(uint8_t);
+    virtual size_t write(const char *str);
+    virtual size_t write(const uint8_t *wBuffer, size_t size);
+
+    // Clears the buffer, writes 0 bytes to all elements (memset) 
+    // and resets position to 0
     int clear();
     
     // Ends, or de-allocates the buffer and frees the memory   
-    // Requires a begin() to use the buffer again
+    // Requires a begin() to create a new buffer if needed
     int end();
     
     // Returns a pointer to the buffer as a const char array
@@ -92,10 +71,9 @@ class TextBuffer : public Print
     // Returns the capacity of the buffer, equal to the bufsize passed initially
     int getCapacity();
     
-    // Variables used by the extension of print class
-    virtual size_t write(uint8_t);
-    virtual size_t write(const char *str);
-    virtual size_t write(const uint8_t *buffer, size_t size);
+    // Creates a checksum from the sequential XOR of the buffer characters
+    // - This is the NMEA0183 standard checksum
+    int getCheckSum();
     
   private:  
   
@@ -103,27 +81,15 @@ class TextBuffer : public Print
     byte* buffer;
     
     // Variable to hold the aligned buffer max capacity
-    //   - Aligned to multiples of 4 bytes for the ESP8266 boards
+    // - Aligned to multiples of 4 bytes for the ESP8266 boards
     unsigned int _bufSize;
     
     // Same as _bufSize, the max capacity, including null terminator, of the buffer
     unsigned int capacity;
     
     // The position of the "cursor", or reference point in the buffer (usually 0)
+    // - Not currently used
     unsigned int position;
-    
-    // Current length of the buffer content, NOT including the null terminator
-    unsigned int length;
-    
-    // String used to temporarily store each individual input to the buffer
-    String bufString;
-    
-    // The length of bufString, plus one for the null terminator
-    unsigned int dataLen;
-    
-    // A char array, of length dataLen, to hold the bufString
-    char tempBuf[];
-
 };
 
 #endif
