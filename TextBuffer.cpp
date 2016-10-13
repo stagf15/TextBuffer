@@ -1,4 +1,4 @@
-﻿#include "Arduino.h"
+#include "Arduino.h"
 #include "TextBuffer.h"
 
 TextBuffer::TextBuffer(unsigned int bufSize)
@@ -20,6 +20,32 @@ int TextBuffer::begin()
     position = 0;
     length = 0;                       // Length does not include null terminator
     return 1;                         // return success
+  }
+
+size_t TextBuffer::write(uint8_t character) 
+  { 
+    // Code to display/add letter when given the ASCII code for it
+  }
+
+size_t TextBuffer::write(const char *str) 
+  { 
+    // Code to display/add string when given a pointer to the beginning
+    // The last character will be null, so a while(*str) is used
+    // Increment str (str++) to get the next letter
+    if (str == NULL) return 0;      
+    return write((const uint8_t *)str, strlen(str));
+  }
+    
+size_t TextBuffer::write(const uint8_t *buffer, size_t size) 
+  { 
+    // Code to display/add array of chars when given a pointer to the 
+    // beginning of the array and a size. This will not end with the null character
+    size_t n = 0;  
+    while (size--) {    
+      if (write(*buffer++)) n++;    
+      else break;  
+    }  
+    return n;
   }
 
 int TextBuffer::write(char* bufData)
@@ -211,4 +237,4 @@ String TextBuffer::getCheckSum()
     checkSumStr.toUpperCase();
     
     return checkSumStr;
-  }
+}
