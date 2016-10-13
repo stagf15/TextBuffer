@@ -14,7 +14,6 @@ int TextBuffer::begin()
     if (!buffer) return 0;        // return failure if malloc fails
     capacity = _bufSize;
     memset(buffer, 0, capacity);  // Initialize by zeroing the entire array
-    //buffer[0] = (char)0;        // Initialize first byte as null terminator
     position = 0;                 // -- Not currently used --
     return capacity;              // return buffer capacity if successful
   }
@@ -25,7 +24,6 @@ size_t TextBuffer::write(uint8_t character)
     if((getSize() + 1) < capacity) {
       // Save the character to the end of the buffer, if there is room
       buffer[getSize()] = character;
-      //buffer[getSize() + 1] = 0;
       return 1;                   // return success (1 byte)
     }
     return 0;                     // return failure (buffer full)
