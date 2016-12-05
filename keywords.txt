@@ -20,7 +20,6 @@ TextBuffer	KEYWORD1
 
 begin	KEYWORD2
 write	KEYWORD2
-write	KEYWORD2
 clear	KEYWORD2
 end	KEYWORD2
 getBuffer	KEYWORD2
